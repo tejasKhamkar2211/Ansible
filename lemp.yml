@@ -1,0 +1,51 @@
+- name: lemp
+  hosts: localhost
+  become: true
+  connection: local
+  tasks:
+   - name: start apache2 service
+     service:
+      name: apache2
+      state: stopped
+   - name: install nginx
+     apt:
+      name: nginx
+      state: present
+   - name: start nginx service
+     service:
+      name: nginx
+      state: started
+   - name: install php8.3-fpm
+     apt:
+      name: php8.3-fpm
+      state: present
+   - name: start php8.3-fpm service
+     service:
+      name: php8.3-fpm
+      state: started
+   - name: install mysql
+      apt:
+       name: mariadb-server
+       state: present
+   - name: start mysql service
+      service:
+       name: mariadb
+       state: started
+   - name: install php
+      apt:
+       name: php
+       state: present
+
+
+   - name: restart nginx service
+      service:
+       name: nginx
+       state: started
+   - name: restart php8.3-fpm service
+      service:
+       name: php8.3-fpm
+       state: started
+   - name: restart mysql service
+      service:
+       name: mariadb
+       state: started
