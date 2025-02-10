@@ -1,0 +1,20 @@
+- name: createfile_createfolder_copyfile_
+  hosts: localhost
+  become: true
+  connection: local
+  tasks:
+   - name: createfile
+     file:
+      name: /home/ubuntu/ansiblefile.txt
+      state: touch
+
+   - name: ceatefolder
+     file:
+      name: /home/ubuntu/createdbyansible
+      state: directory
+
+   - name: copy file or dir
+     copy:
+      src: /home/ubuntu/ansiblefile.txt
+      dest: createdbyansible/
+
