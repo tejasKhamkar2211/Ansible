@@ -1,0 +1,22 @@
+- name: learning loop
+  hosts: localhost
+  become: true
+  connection: local
+  tasks:
+    - name: install lemp with loops
+      apt:
+       name: "{{item}}"
+       state: present
+      loop:
+       - nginx
+       - php
+       - php8.3-fpm
+       - mariadb-server
+    - name: start lemp service with loops
+      service:
+       name: "{{item}}"
+       state: started
+      loop:
+       - nginx
+       - php8.3-fpm
+       - mariadb
