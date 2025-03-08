@@ -1,0 +1,53 @@
+- name: learning new concept os_family
+  hosts: webserver
+  become: true
+  tasks:
+    - name: update package manager apt
+      shell: apt update
+
+      when: ansible_facts['distribution']=="Ubuntu"
+    - name: update package manageer dnf
+      dnf:
+       name: "*"
+       state: latest
+      when: ansible_facts['distribution']=="Amazon"
+    - name: install lemp ubuntu
+      apt:
+       name: "{{item}}"
+       state: present
+      loop:
+       - nginx
+       - php
+       - php8.3-fpm
+       - mariadb-server
+
+      when: ansible_facts['distribution']== "Ubuntu"
+    - name: install lemp amazon_linux
+      dnf:
+       name: "{{item}}"
+       state: present
+      loop:
+       - nginx
+       - php
+       - mariadb105-server
+      when: ansible_facts['distribution']=="Amazon"
+    - name: start lemp in amazon_linux
+      service:
+       name: "{{item}}"
+       state: started
+      loop:
+       - nginx
+       - php-fpm
+       - mariadb
+      when: ansible_facts['distribution']=="Amazon"
+
+    - name: start lemp in Ubuntu
+      service:
+       name: "{{item}}"
+       state: started
+      loop:
+       - nginx
+       - php8.3-fpm
+       - mariadb
+
+      when: ansible_facts['distribution']== "Ubuntu"
