@@ -1,0 +1,24 @@
+- name: restart manually lemp
+  hosts: remotehost
+  become: true
+
+  tasks:
+    - name: Update package cache
+      shell: "apt update"
+    - name: install lemp with loops
+      apt:
+       name: "{{item}}"
+       state: present
+      loop:
+       - nginx
+       - php
+       - php8.3-fpm
+       - mysql-server
+    - name: start lemp service with loops
+      service:
+       name: "{{item}}"
+       state: started
+      loop:
+       - nginx
+       - php8.3-fpm
+       - mysql
