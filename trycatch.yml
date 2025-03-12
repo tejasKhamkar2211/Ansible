@@ -1,0 +1,19 @@
+- name: trycatch
+  hosts: localhost
+  become: true
+  connection: local
+  tasks:
+   - block:
+      - name: install nginx with dnf
+        apt: name=nginx state=present
+      - debug: msg="i am in block"
+     rescue:
+      - name: install nginx with apt
+        apt: name=nginx state=present
+      - debug: msg="i am in rescue"
+     always:
+      - name: start nginx
+        service: name=nginx state=started
+      - debug: msg="i am in always"
+
+
