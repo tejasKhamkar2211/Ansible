@@ -1,0 +1,40 @@
+- name: Configure Nginx using Ansible
+  hosts: localhost
+  become: true
+  connection: local
+
+  vars:
+    my_port: 90
+    my_path: /var/www/html/myweb
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+
+    - name: Create a web directory
+      file:
+        path: "{{ my_path }}"
+        state: directory
+
+    - name: Copy index file
+      copy:
+        src: ./index.html
+        dest: "{{ my_path }}/index.html"
+
+    - name: Copy Nginx configuration file
+      template:
+        src: ./mynginx.conf
+        dest: /etc/nginx/sites-enabled/default
+
+    - name: Reload Nginx service
+      service:
+        name: nginx
+        state: reloaded
