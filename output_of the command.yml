@@ -1,0 +1,19 @@
+- name: Example of register keyword
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Check system disk usage
+      shell: df -h
+      register: disk_output
+
+    - name: Display disk usage result
+      debug:
+        var: disk_output.stdout
+
+    - name: Get list of all users
+      command: cat /etc/passwd
+      register: user_list
+
+    - name: Show total number of users
+      debug:
+        msg: "Total users found: {{ user_list.stdout_lines | length }}"
