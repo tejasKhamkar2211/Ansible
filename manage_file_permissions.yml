@@ -1,0 +1,10 @@
+- name: Set file permissions
+  hosts:  localhost
+  become: yes
+  tasks:
+    - name: Ensure file has correct permissions
+      file:
+        path: /home/ubuntu/default
+        owner: root
+        group: root
+        mode: '0777'
